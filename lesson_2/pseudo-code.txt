@@ -1,0 +1,57 @@
+1. A method that returns the sum of two intergers:
+
+  Casual:
+  
+  Within a method definition that takes two interger variables, add them together. 
+  
+  
+  Formal: 
+  
+  START
+  
+  SET a method definition that takes two intergers
+    SET a variable as the sum of interger1 and interger2
+  END the method
+  
+  END
+
+
+2. A method that takes an array of strings, and returns a string that is all those strings
+concatenated together.
+
+  Casual:
+  
+  Use the .join method.
+  
+  
+  Formal:
+  
+  START
+  
+  SET a method definition that takes an array of strings.
+    READ the array and call the .join method. The result will be returned.
+  END
+  
+  END
+  
+  
+3. A method that takes an array of integers, and returns a new array with every other element.
+
+  Casual:
+  
+  Define a method that takes an array of intergers. For each element in the array, check its
+  index. If the index modulus 2 is zero, push it to a new array. Return the new array.
+  
+  Formal:
+  
+  START
+  
+  SET new_array to []
+  SET a method definition that takes array_of_intergers.
+    READ the array with an each/do block
+      IF the index modulus 2 is zero, push it to new_array.
+      END
+    END
+  END the method
+  
+  END the program
