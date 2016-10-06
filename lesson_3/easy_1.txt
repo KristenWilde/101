@@ -1,0 +1,62 @@
+This file is where my fingers help brain process and retain my learning. 
+I type my own answers first. If I know or have a guess I write that, or
+sometimes I look up info in ruby-docs or test in irb. Then I check the answer 
+and correct when necessary. If I learn something new, I take notes here too,
+sometimes with examples.
+
+
+Q1. prints the original array of numbers, one on each line.
+
+Q2. 
+    1. not equals, in conditional expressions
+    2. means not. Returns true when the expression is false. 
+      !(3 == 3) => false. !(3 > 4) returns true.
+    3. part of a method name. could mutate the caller, such as .uniq!
+    4. could be the ternary operator ? : short for if...else
+    5. part of a method name. Could mean the method returns true or false.
+      For examples, .include? .value? .key?
+    6. !!<some object> turns it into its boolean equivalent.
+      !!(5 * 4) returns true
+      
+Q3. advice.gsub!('important', 'urgent')
+
+Q4. Both delete methods mutate the caller, and both return the deleted value. 
+    .delete_at(index) removes and returns the item at the given index.
+    .delete(value) removes and returns the given value.
+    
+Q5. (10..100).include?(42) or (10..100).cover?(42)
+
+Q6. Both of these methods mutate the caller:
+
+    famous_words.prepend("Four score and ")
+    famous_words.insert(0, "Four score and ")
+
+    Also:
+    
+    "Four score and " + famous_words
+    "Four score and " << famous_words
+
+      Noooooo:  ha ha ha
+      - reverse both, then concatenate, then reverse again.
+      - make new string to hold "Four score" and concatenate famous words on it.
+      - .replace the whole string with the complete phrase.
+
+Q7. 42
+
+Q8. flintstones.flatten!
+
+Q9. flintstones.assoc("Barney")  # How lovely to have a method just for that - 
+      making an array out of the argument and its associated value.
+
+    My long way:
+    flintstones.delete_if {|name| name != "Barney"}
+    flitstones.to_a.flatten!
+
+Q10.  
+    hash = {}
+    flintstones.each_with_index { |name, index| hash[name] = index }
+    flintstones = hash
+
+
+
+  
