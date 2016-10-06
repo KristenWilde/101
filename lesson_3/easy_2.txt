@@ -1,0 +1,72 @@
+
+Q1. ages.include?("Spot")
+    ages.key?("Spot")
+    !!ages["Spot"]  
+    ages.member?("Spot)
+    
+Q2. 
+
+One way:
+
+total = 0
+ages.values.each { |age| total += age }
+total
+
+Shorter way:  inject or reduce method of enumberable module
+
+ages.values.inject(:+) or 
+ages.values.reduce(:+)
+
+Q3.
+
+ages.delete_if { |_, age| age >= 100 }
+ages.keep_if { |_, age| age < 100 }
+
+both modify the caller, same result. I tested whether they're ==, and got "true"!
+(ages.keep_if { |_, age| age < 100 }) == (ages.delete_if { |_, age| age >= 100 })
+
+Q4. 
+
+munsters_description.capitalize!
+munsters_description.swapcase!
+munsters_description.downcase!
+munsters_description.upcase!
+
+Q5.
+
+ages.merge!(additional_ages)
+
+Q6.
+
+ages.min
+
+Q7. 
+
+advice.include?("Dino") => boolean or
+advice.match("Dino") =>  #<MatchData > object or nil
+
+Q8.
+
+one way:
+
+be_name = (flintstones.select { |name| name.start_with?("Be") })[0]
+flintstones.index(be_name)
+
+better way:
+
+flintstones.index { |name| name[0, 2] == "Be" }
+
+Note: string method [] can select parts of a string in several different ways.
+Here, we start with index 0 and match 2 characters. A negative index would be 
+counted from the end of the string. [] could also hold :
+- just an index (returns one character at that index)
+- a range of index numbers (returns all characters in that range)
+- a string (returns that string if it is included, otherwise nil)
+
+Q9.
+
+flintstones.map! { |name| name[0, 3] }
+
+Q10.
+
+see above
