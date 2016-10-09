@@ -1,0 +1,22 @@
+Q1. use %w( )
+
+Q2. flintstones << "Dino"
+
+Q3. also flintstones.push("Dino", "Hoppy")
+
+Q4. 
+
+To remove everything after house:
+advice.slice!("house training your pet dinosaur")
+
+To remove the first part of the sentence:
+new_var = advice.slice!("Few things in life are as important as "
+
+More efficient way:
+new_var = advice.slice!(0, advice.index('house'))
+.slice(index, length)
+
+
+Q5. statement.count('t') or statement.scan('t').count
+
+Q6. title.center(40)
