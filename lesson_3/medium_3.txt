@@ -1,0 +1,42 @@
+Q1. 
+
+Ok . . . 
+The objects are passed into the block with their original id's.
+Reassignment with new values creates new objects (new id's, which they keep after the block).
+Variables scoped inside the block are assigned the same values and id's (thus point 
+to the very same objects), but are not avaiable outside the block.
+I am disturbed that at the beginning of the program, a_outer and d_outer have the 
+same value and id. I did some testing, and the number 42 always has id 85. For strings and
+arrays however, identical values, even literals, have different id's. Interesting.
+
+Q2.
+
+The parameter name used to pass an object into a method is a new local variable and 
+has no relationship to the same variable name used elsewhere.
+
+Q3. 
+
+"My string looks like this now: pumpkins" 
+# because tricky_method didn't return the new string object that was created with +=.
+
+"My array looks like this now: ["pumpkins", "rutabaga"] 
+# because the array was modified in place with << and returned.
+
+Q4.
+
+My guess:
+"My string looks like this now: pumpkins"
+"My array looks like this now: ["pumpkins", "rutabaga"]"
+
+Wrong.
+The method returns the value of the last line,  ["pumpkins", "rutabaga"]. 
+However, why doesn't my_array didn't get the reassigned value? Its value is given
+to a new local variable scoped only inside the method. So, a method cannot be 
+used for reassignment with = .
+
+Q5. 
+
+def color_valid(color)
+  color == ("blue" || "green")
+end
+
