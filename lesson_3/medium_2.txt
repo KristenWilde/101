@@ -1,0 +1,62 @@
+Q1.
+
+total_ages_males = 0
+munsters.each_value do |attributes|
+  if attributes["gender"] == 'male'
+    total_ages_males += attributes["age"]
+  end
+end
+
+Better:
+Think about whether a conditional could be written on one line, like this:
+total_ages_males += attributes["age"] if attributes["gender"] == 'male'
+
+Q2.
+
+munsters.each do |name, details|
+  puts "#{name} is a #{details["age"]} year old #{details["gender"]}."
+end
+
+Q3.
+
+The problem with this method is that it modifies the array but leaves
+the string unchanged.
+My ideas: we could move the puts statements inside the method, or use << for both.
+
+Ok, return two return values with a comma. Slick! I see that it returns the two 
+values in an array.
+And we're assigning both variables at once to the method, also with a comma. Whoah.
+
+my_string, my_array = not_so_tricky_method(my_string, my_array)
+
+Q4.
+
+sentence.split.reverse.join(' ')
+
+or to take the period . into consideration:
+sentence.split(/\W/).reverse.join(' ') + '.'
+
+Q5.
+
+34
+
+Q6.
+
+The original hash is modified because the method .each modifies each element in place.
+
+Q7.
+
+paper
+
+Q8.
+
+My guess: "yes" because whatever param is passed, it is reassined to "no"
+Answer: That's not what (param = "no") means. It means if no param is passed, "no"
+will be a default value. Unlike the method foo, the output does vary according to 
+the parameters. If the param is "no", the output will be "yes", but if anything else
+is passed in the output will be "no". Passing in foo means passing in "yes", so the 
+output is "no".
+
+
+
+

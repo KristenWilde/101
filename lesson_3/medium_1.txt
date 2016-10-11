@@ -1,0 +1,80 @@
+Q1. 
+
+Less efficient way:
+spacer= ""
+10.times do
+  puts spacer + "The Flintstones Rock" 
+  spacer << " "
+end
+
+One line using the built-in iterator variable:
+10.times { |number| puts (" " * number) + "The Flintstones Rock"!}
+
+Q2.
+
+frequency = {}
+("A".."z").each {|letter| frequency[letter] = statement.count(letter) unless statement.count(letter) == 0}
+
+Q3. 
+
+Ruby can't concatenate a string with a number expression.
+  1. Interpolate with #{40 + 2} or
+  2. (40 + 2).to_s
+  
+Q4.
+
+Modifying an array while iterating doesn't work.
+wonky irb results for first example: 
+1
+3
+ => [3, 4]
+for second example: 
+1
+2
+ => [1, 2] 
+
+Q5. 
+
+I would use conditionals before starting the loop. If number == 0 
+return a message, and if number < 0 multiply it by -1, and push
+each divisor * -1 as well.
+Bonus 1: if there's no remainder, that identifies the number as a factor.
+Bonus 2: the last line is what gets returned.
+
+Q6.
+
+<< modifies the original object, + does not.
+
+Q7.
+
+The limit variable is initialized two scople levels above where it is used.
+I would pass the limit into the method as an argument.
+
+Q8.
+
+def titleize!(string)
+  word_array = string.split(" ")
+  word_array.each { |word| word.capitalize! }
+  word_array.join(" ")
+end
+
+def titleize!(string)
+  string.split.map { |word| word.capitalize }.join(" ")
+end
+# can chain methods after a block, and .split doesn't need a parameter.
+
+Q9.
+
+munsters.each_value do |attributes|
+  case attributes["age"] 
+  when (0..17) 
+    attributes["age_group"] = "kid"
+  when (18..64)
+    attributes["age_group"] = "adult"
+  when (65..Float::INFINITY)
+    attributes["age_group"] = "senior"
+  end
+end
+  
+  
+  
