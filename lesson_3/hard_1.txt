@@ -1,0 +1,50 @@
+Q1.
+
+nil. The variable is initialized in an if block that hasn't been executed, so no
+exception is raised.
+
+Q2.
+
+{:a=>"hi there"} because informal_greeting referenced the original object and 
+the << modified it.
+
+Q3.
+
+A) I don't think reassignment with = is permanent within a method. It alters only
+the local variables created by passing in parameters.
+
+B) Same
+
+C) .gsub! modifies the original object, so
+
+  one is two
+  two is three
+  three is one
+  
+Q4.
+
+HEX_CHARS = ("a".."f").to_a + ("0".."9").to_a
+
+def create_uuid
+  uuid = ""
+  8.times { uuid << HEX_CHARS.sample }
+  uuid << "-"
+  3.times do
+    4.times { uuid << HEX_CHARS.sample }
+    uuid << "-"
+  end
+  12.times { uuid << HEX_CHARS.sample }
+  uuid
+end
+
+Q5.
+
+def dot_separated_ip_address?(input_string)
+  dot_separated_words = input_string.split(".")
+  return false unless dot_separated_words.size == 4
+  4.times do
+    word = dot_separated_words.pop
+    return false unless is_an_ip_number?(word)
+  end
+  true
+end
