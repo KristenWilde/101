@@ -63,7 +63,23 @@ def place_piece!(brd, cur_player)
   end
 end
 
-
+def who_goes_first(current_player)
+  prompt "Who should go first? (P for player--you-- or C for computer)"
+  loop do
+    answer = gets.chomp.downcase
+    if answer.start_with? "p" 
+      current_player = "player"
+      break
+    elsif answer.start_with? 'c' 
+      current_player = "computer"
+      break
+    else 
+      prompt "Please enter p or c."
+    end
+  end
+  prompt "#{current_player.capitalize} will go first. Press enter to start!"
+  gets
+end
 
 def player_places_piece!(brd)
   square = ''
@@ -132,7 +148,11 @@ comp_score = 0
 
 loop do # play again loop
   board = initalize_board
-  current_player = "player"
+  current_player = ""
+  
+  system 'clear'
+  prompt "Let's play Tic Tac Toe!"
+  who_goes_first(current_player)
 
   loop do
     display_board(board)
