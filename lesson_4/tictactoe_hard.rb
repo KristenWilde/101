@@ -9,6 +9,7 @@ FIRST_PLAYER = 'choose'.freeze
 WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
                 [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + # columns
                 [[1, 5, 9], [3, 5, 7]]              # diagonals
+WIN_SCORE = 5
 
 def prompt(msg)
   puts "=> " + msg
@@ -54,8 +55,10 @@ def empty_squares(brd)
 end
 
 def place_piece!(brd, cur_player)
-  if cur_player == "player" then player_places_piece!(brd)
-  else computer_places_piece!(brd)
+  if cur_player == "player"
+    player_places_piece!(brd)
+  else
+    computer_places_piece!(brd)
   end
 end
 
@@ -79,19 +82,14 @@ def complete_a_line(brd, marker)
   square
 end
 
-def corner(brd)
-  corners = [1, 3, 7, 9]
-  until corners.empty?
-    corner = corners.shuffle!.pop
-    break corner if brd[corner] == INITIAL_MARKER
-  end
+def choose_5(brd)
+  5 if brd[5] == INITIAL_MARKER
 end
 
 def computer_places_piece!(brd)
   square = complete_a_line(brd, COMPUTER_MARKER) || # offensive
            complete_a_line(brd, PLAYER_MARKER) || # defensive
-           (5 if brd[5] == INITIAL_MARKER) ||
-           corner(brd) ||
+           choose_5(brd) ||
            empty_squares(brd).sample
   brd[square] = COMPUTER_MARKER
 end
@@ -167,17 +165,17 @@ loop do
   end
 
   prompt "That makes #{player_score} wins for you, and #{comp_score} for me."
-  if player_score == 5 || comp_score == 5
+  if player_score == WIN_SCORE || comp_score == WIN_SCORE
     puts ""
-    puts " ~ ~ ~  First to 5, #{winner} won !!!  ~ ~ ~"
+    puts " ~ ~ ~  First to #{WIN_SCORE}, #{winner} won !!!  ~ ~ ~"
     puts ""
     comp_score = 0
     player_score = 0
     prompt "Both our scores are back to 0."
-  elsif player_score < 5 && comp_score < 5
-    prompt "First player to 5 is the winner!"
+  elsif player_score < WIN_SCORE && comp_score < WIN_SCORE
+    prompt "First player to #{WIN_SCORE} is the winner!"
   end
-  prompt "Keep playing?"
+  prompt "Keep playing? (y to continue, any other character to quit)"
   answer = gets.chomp
   break unless answer.downcase.start_with?('y')
 end
