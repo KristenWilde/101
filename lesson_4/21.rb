@@ -10,12 +10,12 @@
 
 require 'pry'
 
-SUITS = ['Hearts', 'Diamonds', 'Clubs', 'Spades']
-VALUES = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 
-         'Jack', 'Queen', 'King', 'Ace']
-GOAL = 21.freeze
-DEALER_STAY_VAL = 17.freeze
-PLAY_TO = 5.freeze
+SUITS = ['Hearts', 'Diamonds', 'Clubs', 'Spades'].freeze
+VALUES = ['2', '3', '4', '5', '6', '7', '8', '9', '10',
+          'Jack', 'Queen', 'King', 'Ace'].freeze
+GOAL = 21
+DEALER_STAY_VAL = 17
+PLAY_TO = 5
 
 def prompt(msg)
   puts ">> " + msg
@@ -66,8 +66,8 @@ end
 
 def compare(player_cards, player_total, dealer_cards, dealer_total)
   puts "  =============="
-  prompt "Dealer has #{display_cards(dealer_cards)}, for a total of #{dealer_total}"
-  prompt "Player has #{display_cards(player_cards)}, for a total of #{player_total}"
+  prompt "Dealer has #{display_cards(dealer_cards)}, totalling #{dealer_total}"
+  prompt "Player has #{display_cards(player_cards)}, totalling #{player_total}"
   puts "  =============="
 end
 
@@ -88,7 +88,7 @@ end
 def display_result(winner, player_wins, dealer_wins)
   case winner
   when :player
-    prompt "Player won!" 
+    prompt "Player won!"
   when :dealer
     prompt "Dealer won!"
   when :tie
@@ -103,7 +103,7 @@ def play_again?
     answer = gets.chomp
     break true if answer.downcase.start_with?('y')
     break false if answer.downcase.start_with?('n')
-    prompt "Please answer y or n" 
+    prompt "Please answer y or n"
   end
 end
 
@@ -132,7 +132,7 @@ loop do
   deck = initialize_deck
   player_total = 0
   dealer_total = 0
-  
+
   system 'clear'
   player_cards = deck.pop(2)
   dealer_cards = deck.pop(2)
