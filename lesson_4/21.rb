@@ -15,6 +15,7 @@ VALUES = ['2', '3', '4', '5', '6', '7', '8', '9', '10',
          'Jack', 'Queen', 'King', 'Ace']
 GOAL = 21.freeze
 DEALER_STAY_VAL = 17.freeze
+PLAY_TO = 5.freeze
 
 def prompt(msg)
   puts ">> " + msg
@@ -27,6 +28,11 @@ end
 def display_cards(cards)
   phrases = cards.map { |card| card[1] + ' of ' + card[0] }
   phrases.join(", ").rjust(56)
+end
+
+def display_dealer_card(cards)
+  phrase = '  ?  , ' + cards[1][1] + ' of ' + cards[1][0]
+  phrase.rjust(56)
 end
 
 def total(cards)
@@ -58,6 +64,13 @@ def stay?(total, opponent_total)
   total > opponent_total || total >= DEALER_STAY_VAL
 end
 
+def compare(player_cards, player_total, dealer_cards, dealer_total)
+  puts "  =============="
+  prompt "Dealer has #{display_cards(dealer_cards)}, for a total of #{dealer_total}"
+  prompt "Player has #{display_cards(player_cards)}, for a total of #{player_total}"
+  puts "  =============="
+end
+
 def calculate_win(player_total, dealer_total)
   if player_total > GOAL
     :dealer
@@ -72,20 +85,21 @@ def calculate_win(player_total, dealer_total)
   end
 end
 
-def display_result(winner)
+def display_result(winner, player_wins, dealer_wins)
   case winner
   when :player
-    prompt "Player won!"
+    prompt "Player won!" 
   when :dealer
     prompt "Dealer won!"
   when :tie
-    prompt "It was a tie!"
+    prompt "It's a tie!"
   end
+  prompt "I've won #{dealer_wins} rounds so far, you've won #{player_wins}."
 end
 
 def play_again?
   loop do
-    prompt "Do you want to play again? (y or n)"
+    prompt "Keep playing? (y or n)"
     answer = gets.chomp
     break true if answer.downcase.start_with?('y')
     break false if answer.downcase.start_with?('n')
@@ -105,10 +119,14 @@ prompt "I'll deal. Two cards for you, face up, and two for me (one
    Ace is worth 11, unless your total cards are over #{GOAL} - then it's
    worth 1.
    After you stay, it's the dealer's turn. I'll also try to get as close
-   as possible to #{GOAL}. If neither of us busts, the higher total wins."
+   as possible to #{GOAL}. If neither of us busts, the higher total wins.
+   Whoever wins #{PLAY_TO} rounds first is the champion!"
 puts
 prompt 'Press enter to start!'
 gets
+
+player_wins = 0
+dealer_wins = 0
 
 loop do
   deck = initialize_deck
@@ -118,7 +136,7 @@ loop do
   system 'clear'
   player_cards = deck.pop(2)
   dealer_cards = deck.pop(2)
-  prompt "Dealer cards:" + "#{display_cards([dealer_cards[1]])}, ? ".rjust(30)
+  prompt "Dealer cards: #{display_dealer_card(dealer_cards)}"
   loop do
     prompt "Player cards: #{display_cards(player_cards)}"
     player_total = total(player_cards)
@@ -131,8 +149,12 @@ loop do
   end
 
   if busted?(player_total)
-    winner = calculate_win(player_total, dealer_total)
-    display_result(winner)
+    dealer_total = total(dealer_cards)
+    compare(player_cards, player_total, dealer_cards, dealer_total)
+    winner = :dealer
+    dealer_wins += 1
+    display_result(winner, player_wins, dealer_wins)
+    dealer_wins += 1
     play_again? ? next : break
   else
     prompt "You chose to stay!"
@@ -142,7 +164,7 @@ loop do
   loop do
     dealer_total = total(dealer_cards)
     prompt "Dealer cards: #{display_cards(dealer_cards)}."
-    prompt "My total: #{dealer_total}"
+    prompt "Dealer total: total: #{dealer_total}"
     prompt "Please press enter."
     gets
     if busted?(dealer_total)
@@ -156,7 +178,22 @@ loop do
   end
 
   # Compare and win
+  compare(player_cards, player_total, dealer_cards, dealer_total)
   winner = calculate_win(player_total, dealer_total)
-  display_result(winner)
+  if winner == :dealer
+    dealer_wins += 1
+  elsif winner == :player
+    player_wins += 1
+  end
+  display_result(winner, player_wins, dealer_wins)
+  if dealer_wins == PLAY_TO
+    prompt "Dealer has won #{PLAY_TO} rounds! I am the champion."
+    break
+  elsif player_wins == PLAY_TO
+    prompt "Player has won #{PLAY_TO} rounds! You are the champion."
+    break
+  end
   break unless play_again?
 end
+
+prompt "Thanks for playing #{GOAL}!!!"
