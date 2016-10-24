@@ -75,47 +75,46 @@ require 'pry'
 
 # puts (1..99).select(&:even?)
 
-# Sum or Product of Consecutive Integers
+# # Sum or Product of Consecutive Integers
 
-def valid_integer?(input)
-  input == input.to_i.to_s && input != 0
-end
+# def valid_integer?(input)
+#   input == input.to_i.to_s && input != 0
+# end
 
-def sum(num)
-  (1..num).inject(:+)
-end
+# def sum(num)
+#   (1..num).inject(:+)
+# end
 
-def product(num)
-  (1..num).inject(:*)
-end
+# def product(num)
+#   (1..num).inject(:*)
+# end
 
-int = nil
+# int = nil
 
-loop do
-  puts "Please enter an integer greater than 0."
-  int = gets.chomp
-  if valid_integer?(int)
-    int = int.to_i
-    break
-  end
-  "That is not an integer greater than 0."
-end
+# loop do
+#   puts "Please enter an integer greater than 0."
+#   int = gets.chomp
+#   if valid_integer?(int)
+#     int = int.to_i
+#     break
+#   end
+#   "That is not an integer greater than 0."
+# end
 
-binding.pry
-
-loop do
-  puts "Enter 's' to compute the sum, or 'p' to compute the product."
-  operation = gets.chomp.downcase
+# loop do
+#   puts "Enter 's' to compute the sum, or 'p' to compute the product."
+#   operation = gets.chomp.downcase
   
-  if operation == 's'
-    puts "The sum of the integers between 1 and #{int} is #{sum(int)}."
-    break
-  elsif operation == 'p'
-    puts "The product of the integers between 1 and #{int} is #{product(int)}."
-    break
-  end
-    puts 'Oops. Unknown operation'
-end
+#   if operation == 's'
+#     puts "The sum of the integers between 1 and #{int} is #{sum(int)}."
+#     break
+#   elsif operation == 'p'
+#     puts "The product of the integers between 1 and #{int} is #{product(int)}."
+#     break
+#   end
+#     puts 'Oops. Unknown operation'
+# end
+
 
 
 
