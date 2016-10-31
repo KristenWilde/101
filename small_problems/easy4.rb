@@ -86,7 +86,7 @@ DIGITS = {
   '5' => 5, '6' => 6, '7' => 7, '8' => 8, '9' => 9
 }
 
-def string_to_interger(string)
+def string_to_integer(string)
   numbers = []
   for index in (1..string.length)
     number = DIGITS[string[-index]]
@@ -113,29 +113,38 @@ end
 def string_to_signed_integer(string)
   case string[0] 
   when '-' 
-    string_to_interger(string.delete('-')) * -1
+    string_to_integer(string.delete('-')) * -1
   when '+'
-    string_to_interger(string.delete('+'))
+    string_to_integer(string.delete('+'))
   else 
-    string_to_interger(string)
+    string_to_integer(string)
   end
 end
 
-### David's solution - I wanted to test it.
+### 
 
-DIGITSD = {
-  '0' => 0, '1' => 1, '2' => 2, '3' => 3, '4' => 4,
-  '5' => 5, '6' => 6, '7' => 7, '8' => 8, '9' => 9,
-  '-' => 0, '+' => 0
-}
+DIGITS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-']
 
-def string_to_signed_integerd(string)
-  chars = string.chars.map { |char| DIGITSD[char] }
-  numbers = chars.inject { |a, i| a*10 + i }
-  return (numbers * -1) if string[0] == '-'
-  numbers
+def signed_integer_to_string(number)
+  result = ''
+  unless number.positive?
+    sign = :negative
+    number *= -1
+  end
+    
+  loop do
+    number, remainder = number.divmod(10)
+    result.prepend(DIGITS[remainder])
+    break if number == 0
+  end
+  result.prepend('-') if sign == :negative
+  result
 end
 
-puts string_to_signed_integerd('4321') == 4321
-puts string_to_signed_integerd('-570') == -570
-puts string_to_signed_integerd('+100') == 100
+def signed_integer_to_string(number)
+  case number <=> 0
+  when -1 then "-#{integer_to_string(-number)}"
+  when +1 then "+#{integer_to_string(number)}"
+  else         integer_to_string(number)
+  end
+end
