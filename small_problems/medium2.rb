@@ -46,9 +46,9 @@ def letter_percentages(string)
   {lowercase: lower_percent, uppercase: upper_percent, neither: neither_percent}
 end
 
-puts letter_percentages('abCdef 123')
-puts letter_percentages('AbCd +Ef')
-puts letter_percentages('123')
+# puts letter_percentages('abCdef 123')
+# puts letter_percentages('AbCd +Ef')
+# puts letter_percentages('123')
 
 # Matching Parentheses
 
@@ -120,7 +120,40 @@ def friday_13th?(year)
 end
     
 # Featured numbers
+# odd
+# multiple of 7
+# no repeating digits
+
+def no_repeating_digits(number)
+  string_num = number.to_s
+  0.upto(string_num.length - 1) do |index|
+    return false if string_num[0...index].include?(string_num[index])
+  end
+  true
+end
+
+# puts no_repeating_digits(3453)
 
 def featured(integer)
-  
+  number = integer + 1
+  loop do 
+    if number.odd? && number % 7 == 0 && no_repeating_digits(number)
+      break number
+    end
+    number += 1
+    if number.to_s.length > 9
+      puts "There is no possible number that fulfills those requirements."
+      break
+    end
+  end
 end
+
+# puts featured(12)
+# puts featured(20) == 21
+# puts featured(21) == 35
+# puts featured(997) == 1029
+# puts featured(1029) == 1043
+# puts featured(999_999) == 1_023_547
+# puts featured(999_999_987) == 1_023_456_987
+
+puts featured(9_999_999_999)
