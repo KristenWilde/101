@@ -1,0 +1,17 @@
+Making classes and modules:
+
+module Speak
+  def speak(words)
+    puts words
+  end
+end
+
+class GoodDog
+  include Speak
+end
+
+fido = GoodDog.new
+
+fido.speak("Woof")
+#=> Woof
+
