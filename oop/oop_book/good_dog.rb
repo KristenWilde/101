@@ -170,3 +170,26 @@ value = Mammal.some_out_of_place_method(4)
 # or, less preferred:
 value = Mammal::some_out_of_place_method(4)
 
+# Public, private, and protected
+
+# Public methods can be called on objects (classes or instances).
+# Private methods are written below the keyword 'private' within the class definition.
+#   They can be used within the class (even by public methods) only when used without
+#   'self'. Outside the class
+#   they don't exist; attempting to use them will throw a NoMethodError.
+# Protected methods likewise exist only within the class, but can be called with 'self'.
+
+class Animal
+  def a_public_method
+    "Will this work? " + a_protected_method
+  end
+
+  protected
+
+  def a_protected_method
+    "Yes, I'm protected!"
+  end
+end
+
+fido = Animal.new
+puts fido.a_public_method 
