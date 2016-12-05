@@ -125,8 +125,7 @@ bob = Student.new
 joe.grade = 88
 bob.grade = 75
 
-#joe.better_grade_than?(bob)
-bob.better_grade_than?(joe)
+joe.better_grade_than?(bob)
 
 # 8.
 

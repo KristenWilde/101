@@ -101,7 +101,6 @@ class Vehicle
   def initialize(year)
     @year = year
   end
-  
 end
 
 class Truck < Vehicle
@@ -117,3 +116,24 @@ puts truck1.tow
 
 car1 = Car.new(2006)
 puts car1.year
+
+# Method lookup 1
+
+# Cat Animal
+
+# part 2: checked Cat, Animal, Object, Kernel, BasicObject
+
+# part 3: Bird, Flyable, Animal
+
+# Transportation
+
+module Transportation
+  class Vehicle
+  end
+  
+  class Truck < Vehicle
+  end
+  
+  class Car < Vehicle
+  end
+end

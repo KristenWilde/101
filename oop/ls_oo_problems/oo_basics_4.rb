@@ -143,8 +143,7 @@ puts person1.age
 
 class Person
   def name=(name)
-    @first_name = name.split[0]
-    @last_name = name.split[1]
+    @first_name, @last_name = name.split(' ')
   end
   def name
     "#{@first_name} #{@last_name}"
