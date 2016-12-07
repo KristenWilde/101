@@ -1,56 +1,45 @@
 require 'pry'
 
-# stores and compares the values rock, paper, and scissors for each player
 class Move
-  VALUES = %w(rock paper scissors lizard spock).freeze
-  attr_accessor :value
-
-  def initialize(value)
-    @value = value
-  end
-
-  def scissors?
-    value == 'scissors'
-  end
-
-  def paper?
-    value == 'paper'
-  end
-
-  def rock?
-    value == 'rock'
-  end
-
-  def lizard?
-    value == 'lizard'
-  end
-  
-  def spock?
-    value == 'spock'
-  end
-
-  def >(other)
-    (rock? && other.scissors?) ||
-      (paper? && other.rock?) ||
-      (scissors? && other.paper?) ||
-      (rock? && other.lizard?) ||
-      (paper? && other.spock?) ||
-      (scissors? && other.lizard?) ||
-      (lizard? && other.paper?) ||
-      (lizard? && other.spock?) ||
-      (spock? && other.scissors?) ||
-      (spock? && other.rock?)
-  end
-
   def to_s
-    value
+    self.class.to_s
   end
 end
 
+class Rock < Move
+  def >(other)
+    other.class == Scissors || other.class == Lizard
+  end
+end
+
+class Paper < Move
+  def >(other)
+    other.class == Rock || other.class == Spock
+  end
+end
+
+class Scissors < Move
+  def >(other)
+    other.class == Paper || other.class == Lizard
+  end
+end
+
+class Lizard < Move
+  def >(other)
+    other.class == Paper || other.class == Spock
+  end
+end
+
+class Spock < Move
+  def >(other)
+    other.class == Scissors || other.class == Rock
+  end
+end
 
 # human or computer
 class Player
   attr_accessor :move, :name, :score
+  MOVES = {r: Rock.new, p: Paper.new, s: Scissors.new, l: Lizard.new, sp: Spock.new}
 
   def initialize
     set_name
@@ -71,15 +60,15 @@ class Human < Player
     self.name = n
   end
 
-  def choose
+  def choose_move
     choice = nil
     loop do
-      puts "#{name}, choose rock, paper, scissors, lizard, or spock:"
-      choice = gets.chomp
-      break if Move::VALUES.include? choice
+      puts "Please choose (r)ock, (p)aper, (s)cissors, (l)izard, or (sp)ock:" 
+      choice = gets.chomp.downcase.to_sym
+      break if MOVES.keys.include? choice
       puts 'Sorry, invalid choice.'
     end
-    self.move = Move.new(choice)
+    self.move = MOVES[choice]
   end
 end
 
@@ -89,8 +78,8 @@ class Computer < Player
     self.name = ['R2D2', 'Hal', 'Chappie', 'Sonny', 'Number 5'].sample
   end
 
-  def choose
-    self.move = Move.new(Move::VALUES.sample)
+  def choose_move
+    self.move = MOVES[[:r, :p, :s, :l, :sp].sample]
   end
 end
 
@@ -101,18 +90,17 @@ class RPSGame
   attr_accessor :human, :computer
 
   def initialize
+  end
+
+  def play
     clear_screen
     display_welcome_message
     @human = Human.new
     @computer = Computer.new
-    play
-  end
-
-  def play
     loop do
       puts
-      human.choose
-      computer.choose
+      human.choose_move
+      computer.choose_move
       puts
       display_moves
       display_winner
@@ -218,4 +206,4 @@ FISTBUMP
   end
 end
 
-RPSGame.new
+RPSGame.new.play
