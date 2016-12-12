@@ -1,54 +1,59 @@
-require 'pry'
 
 class Move
   def to_s
     self.class.to_s
   end
+  
+  def >(other)
+    opponent = other.class.to_s
+    self.class::DEFEATS.keys.include?(opponent)
+  end
 end
 
 class Rock < Move
-  def >(other)
-    other.class == Scissors || other.class == Lizard
-  end
+  DEFEATS = {'Scissors' => 'crushes', 'Lizard' => 'crushes'}
 end
 
 class Paper < Move
-  def >(other)
-    other.class == Rock || other.class == Spock
-  end
+  DEFEATS = {'Rock' => 'covers', 'Spock' => 'disproves'}
 end
 
 class Scissors < Move
-  def >(other)
-    other.class == Paper || other.class == Lizard
-  end
+  DEFEATS = {'Paper' => 'cut', 'Lizard' => 'decapitate'}
 end
 
 class Lizard < Move
-  def >(other)
-    other.class == Paper || other.class == Spock
-  end
+  DEFEATS = {'Paper' => 'eats','Spock' => 'poisons'}
 end
 
 class Spock < Move
-  def >(other)
-    other.class == Scissors || other.class == Rock
-  end
+  DEFEATS = {'Scissors' => 'smashes', 'Rock' => 'vaporizes'}
 end
 
 # human or computer
 class Player
   attr_accessor :move, :name, :score
-  MOVES = {r: Rock.new, p: Paper.new, s: Scissors.new, l: Lizard.new, sp: Spock.new}
+  MOVES = { r: Rock.new,
+            p: Paper.new,
+            s: Scissors.new,
+            l: Lizard.new,
+            sp: Spock.new,
+            q: false }.freeze
+            
 
   def initialize
     set_name
     @score = 0
   end
+  
+  def to_s
+    name
+  end
 end
 
 # for the human player
 class Human < Player
+  
   def set_name
     n = ""
     loop do
@@ -63,13 +68,15 @@ class Human < Player
   def choose_move
     choice = nil
     loop do
-      puts "Please choose (r)ock, (p)aper, (s)cissors, (l)izard, or (sp)ock:" 
+      puts "Choose (r)ock, (p)aper, (s)cissors, (l)izard (sp)ock, or (q)uit:"
       choice = gets.chomp.downcase.to_sym
       break if MOVES.keys.include? choice
       puts 'Sorry, invalid choice.'
     end
     self.move = MOVES[choice]
   end
+
+
 end
 
 # for the computer player
@@ -83,13 +90,20 @@ class Computer < Player
   end
 end
 
+class Round
+  
+end
+
 # Game orchestration engine:
 class RPSGame
   WIN = 4
-  GAME_NAME = "Rock Paper Scissors Lizard Spock"
-  attr_accessor :human, :computer
+  GAME_NAME = "Rock Paper Scissors Lizard Spock".freeze
+  attr_accessor :human, :computer, :round_num
+
 
   def initialize
+    @history = []
+    @round_num = 1
   end
 
   def play
@@ -99,17 +113,18 @@ class RPSGame
     @computer = Computer.new
     loop do
       puts
-      human.choose_move
+      break unless human.choose_move
       computer.choose_move
-      puts
-      display_moves
-      display_winner
-      puts
+      winner = calculate_winner
       comment_on_points
-      break unless play_again?
+      save_round(winner)
       clear_screen
       display_welcome_message
       display_score
+      puts
+      display_history
+      puts
+      # break unless play_again?
     end
     display_goodbye_message
   end
@@ -122,32 +137,73 @@ class RPSGame
     puts "Welcome to #{GAME_NAME}!"
   end
 
-  def display_moves
-    puts "#{human.name} chose #{human.move}."
-    puts "#{computer.name} chose #{computer.move}."
-  end
+  # def display_moves
+  #   puts "#{human.name} chose #{human.move}."
+  #   puts "#{computer.name} chose #{computer.move}."
+  # end
 
-  def display_winner
+  def calculate_winner
     if human.move > computer.move
       human.score += 1
-      puts "#{human.name} won!"
+      human
     elsif computer.move > human.move
       computer.score += 1
-      puts "#{computer.name} won!"
+      computer
     else
-      puts "It's a tie!"
+      'tie'
     end
   end
+  
+  # def display_winner(winner)
+  #   if winner == 'tie' 
+  #     puts "It's a tie!"
+  #   else
+  #     puts "#{winner} won!"
+  #   end
+  # end
 
   def display_score
-    puts "#{human.name}: #{human.score}              " +
+    puts "First player to #{WIN} points wins.      " \
+         "#{human.name}: #{human.score}     " \
          "#{computer.name}: #{computer.score}"
   end
 
+  def save_round(winner)
+    if winner == 'tie'
+      round = { number: round_num,
+                winner: winner,
+                moves: human.move
+      }
+    else
+      loser = ([human, computer] - [winner]).first
+      verb = winner.move.class::DEFEATS[loser.move.to_s]
+      round = { number: round_num,
+                winner: winner.name,
+                win_move: winner.move,
+                loser: loser.name,
+                lose_move: loser.move,
+                verb: verb
+      }
+    end
+    @history.push(round)
+    @round_num += 1
+  end
+
+  def display_history 
+    @history.each do |round| # history is an array of hashes
+      if round[:winner] == 'tie'
+        puts "Round #{round[:number]}: " \
+             "Tie. Both chose #{round[:moves]}."
+      else
+        puts "Round #{round[:number]}: " \
+              "#{round[:winner]}'s #{round[:win_move]} #{round[:verb]} " \
+              "#{round[:loser]}'s #{round[:lose_move]}."
+      end
+    end
+  end
+
   def comment_on_points
-    if (human.score < WIN) && (computer.score < WIN)
-      puts "First one to #{WIN} points wins."
-    elsif (human.score == WIN) && (computer.score < WIN)
+    if (human.score == WIN) && (computer.score < WIN)
       celebrate
       reset_scores
     elsif (human.score < WIN) && (computer.score == WIN)
@@ -160,7 +216,7 @@ class RPSGame
     puts "Please press Enter."
     gets
     clear_screen
-    puts "Congratulations #{human.name}, you beat #{computer.name} at " +
+    puts "Congratulations #{human.name}, you beat #{computer.name} at " \
          "#{GAME_NAME}!"
     puts <<'FISTBUMP'
           .--.___.----.___.--._
@@ -178,7 +234,7 @@ class RPSGame
       |         .--.\
       |        '     |
       `.      |  _.-'
-        `.|__.-'  
+        `.|__.-'
 FISTBUMP
     puts "Please press Enter."
     gets
@@ -188,12 +244,13 @@ FISTBUMP
   def reset_scores
     human.score = 0
     computer.score = 0
+    @history = []
     puts "Scores have been reset to 0."
   end
-  
+
   def play_again?
     loop do
-      puts 'Play again? (y/n)'
+      puts 'Keep playing? (y/n)'
       answer = gets.chomp.downcase
       break true if answer == 'y'
       break false if answer == 'n'
@@ -207,3 +264,6 @@ FISTBUMP
 end
 
 RPSGame.new.play
+
+
+
