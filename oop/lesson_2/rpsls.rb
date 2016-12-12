@@ -77,7 +77,7 @@ class Human < Player
     loop do
       puts "What's your name?"
       n = gets.chomp
-      break unless n.empty?
+      break unless ( n.empty? || n.match(/^ +$/) )
       puts 'Sorry, must enter a value.'
     end
     self.name = n
