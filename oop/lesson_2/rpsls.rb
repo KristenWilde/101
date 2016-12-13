@@ -1,4 +1,4 @@
-require 'pry'
+
 
 class Move
   def to_s
@@ -37,6 +37,7 @@ end
 
 class Lizard < Move
   DEFEATS = { 'Paper' => 'eats', 'Spock' => 'poisons' }.freeze
+
   def to_sym
     :l
   end
@@ -73,14 +74,14 @@ end
 # for the human player
 class Human < Player
   def set_name
-    n = ""
+    username = ""
     loop do
       puts "What's your name?"
-      n = gets.chomp
-      break unless ( n.empty? || n.match(/^ +$/) )
+      username = gets.chomp
+      break unless username.empty? || username.match(/^ +$/)
       puts 'Sorry, must enter a value.'
     end
-    self.name = n
+    self.name = username
   end
 
   def choose_move
@@ -115,17 +116,17 @@ class Computer < Player
 
   def equal_weight
     choices = [:r, :p, :s, :l, :sp]
-    select(choices)
+    choose(choices)
   end
 
   def prefers_rock
     choices = [:r, :r, :r, :r, :r, :p, :s, :l, :sp]
-    select(choices)
+    choose(choices)
   end
 
   def never_lizard
     choices = [:r, :p, :s, :s, :s, :sp, :sp]
-    select(choices)
+    choose(choices)
   end
 
   def cheat(other_move)
@@ -136,7 +137,7 @@ class Computer < Player
               when 'Lizard' then [:r, :s]
               when 'Spock' then [:sp, :p, :l]
               end
-    select(choices)
+    choose(choices)
   end
 
   def learn_from_history(history)
@@ -151,10 +152,10 @@ class Computer < Player
     losses.each { |round| choices -= [round[:lose_move].to_sym] }
     # decreases chance for moves that previously led to losses
 
-    select(choices)
+    choose(choices)
   end
 
-  def select(choices)
+  def choose(choices)
     self.move = MOVES[choices.sample]
   end
 end
@@ -179,9 +180,7 @@ class RPSGame
       winner = calculate_winner
       save_round(winner)
       display_history
-      if winner != 'tie' && winner.score == WIN
-        comment_on_win(winner)
-      end
+      comment_on_win(winner) if winner != 'tie' && winner.score == WIN
     end
     display_goodbye_message
   end
@@ -215,8 +214,7 @@ class RPSGame
   end
 
   def display_score
-    puts
-    puts "#{human.name}: #{human.score}   #{computer.name}: #{computer.score}"
+    puts "\n#{human.name}: #{human.score}   #{computer.name}: #{computer.score}"
     puts
   end
 
@@ -257,9 +255,7 @@ class RPSGame
 
   def comment_on_win(winner)
     display_score
-    puts
-    puts "#{winner.name} wins!!!"
-    puts
+    puts "\n#{winner.name} wins!!!\n "
     reset
   end
 
