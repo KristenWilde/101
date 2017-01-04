@@ -128,7 +128,7 @@ the downpour as quickly as #{pronoun} could, but was soaked to the
 #{body_part2} when #{pronoun} arrived at home. 
 
 'Can I go in the house all #{adj2}, covered with #{substance}, and smelling 
-like #{smell}?' wondered #{name}. #{pronoun.capitzlize} looked down and gave a 
+like #{smell}?' wondered #{name}. #{pronoun.capitalize} looked down and gave a 
 sniff.
 
 '#{exclamation.capitalize}! The rain has #{verb_ed4} me clean!!' #{name} went 

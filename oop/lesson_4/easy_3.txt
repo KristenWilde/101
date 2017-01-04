@@ -27,6 +27,6 @@ tv.model => works
 Television.manufacturer => works
 Television.model => error
 
-6. Use @age
+6. Use @age or age = age + 1
 
 7. return

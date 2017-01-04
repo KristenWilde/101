@@ -34,3 +34,35 @@ p HotSauce.ancestors #=> [HotSauce, Taste, Object, Kernel, BasicObject]
 #     - defining new behaviors to go with objects 
 #     - fun - allows for abstract thinking
 #     - manage complexity, including with namespacing
+
+class Cat
+  attr_accessor :type, :age
+
+  def initialize(type)
+    @type = type
+    @age  = 0
+  end
+
+  def make_one_year_older
+    self.age += 1
+  end
+end
+
+heather = Cat.new('calico')
+puts heather.make_one_year_older
+puts heather.age
+
+class BankAccount
+  attr_reader :balance
+
+  def initialize(starting_balance)
+    @balance = starting_balance
+  end
+
+  def positive_balance?
+    balance >= 0
+  end
+end
+
+mine = BankAccount.new(350)
+puts mine.positive_balance?
