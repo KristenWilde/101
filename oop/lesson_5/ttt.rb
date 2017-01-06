@@ -1,5 +1,3 @@
-require 'pry'
-
 class Board
   attr_accessor :squares
   WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
@@ -10,9 +8,10 @@ class Board
     @squares = {}
     reset
   end
-  
+
+  # rubocop:disable Metrics/AbcSize
   def draw
-  puts <<BOARD
+    puts <<BOARD
      |     |
   #{squares[1]}  |  #{squares[2]}  |  #{squares[3]}
      |     |
@@ -26,23 +25,24 @@ class Board
      |     |
 BOARD
   end
-  
+  # rubocop:enable Metrics/AbcSize
+
   def []=(num, marker)
     @squares[num].marker = marker
   end
-  
+
   def unmarked_keys
     @squares.keys.select { |key| @squares[key].unmarked? }
   end
-  
+
   def full?
     unmarked_keys.empty?
   end
-  
+
   def someone_won?
     !!winning_marker
   end
-  
+
   def winning_marker
     WINNING_LINES.each do |line|
       markers = @squares.values_at(*line).map!(&:marker)
@@ -53,24 +53,24 @@ BOARD
     nil
     # return winning marker or nil
   end
-  
+
   def reset
-    (1..9).each { |key| @squares[key] = Square.new}
+    (1..9).each { |key| @squares[key] = Square.new }
   end
 end
 
 class Square
-    INITIAL_MARKER = ' '
+  INITIAL_MARKER = ' '.freeze
   attr_accessor :marker
-  
+
   def initialize(marker = INITIAL_MARKER)
     @marker = marker
   end
-  
+
   def to_s
     @marker
   end
-  
+
   def unmarked?
     marker == INITIAL_MARKER
   end
@@ -84,7 +84,6 @@ class Player
 end
 
 class TTTGame
-  
   def initialize
     @board = Board.new
     @human = Player.new(HUMAN_MARKER)
@@ -95,7 +94,7 @@ class TTTGame
   def play
     clear
     display_welcome_message
-    
+
     loop do
       display_board
       loop do
@@ -108,22 +107,22 @@ class TTTGame
       reset
       display_play_again_message
     end
-  
+
     display_goodbye_message
   end
-  
+
   private
+
   attr_reader :board, :human, :computer
   attr_accessor :human_turn
-  HUMAN_MARKER = 'X'
-  COMPUTER_MARKER = 'O'
+  HUMAN_MARKER = 'X'.freeze
+  COMPUTER_MARKER = 'O'.freeze
 
-  
   def display_welcome_message
     puts "Welcome to Tic Tac Toe!"
-    puts 
+    puts
   end
-  
+
   def display_goodbye_message
     puts "Thanks for playing Tic Tac Toe! Goodbye!"
   end
@@ -131,7 +130,7 @@ class TTTGame
   def clear
     system('clear') || system('cls')
   end
-  
+
   def display_result
     clear_screen_and_display_board
     case board.winning_marker
@@ -142,7 +141,7 @@ class TTTGame
     else puts "It's a tie!"
     end
   end
-  
+
   def play_again?
     answer = nil
     loop do
@@ -184,21 +183,21 @@ class TTTGame
       break if board.unmarked_keys.include?(square)
       puts "Sorry, that's not a valid choice."
     end
-    
+
     board[square] = human.marker
   end
-  
+
   def computer_moves
     square = board.unmarked_keys.sample
     board[square] = computer.marker
   end
-  
+
   def reset
     board.reset
     clear
     @human_turn = true
   end
-  
+
   def display_play_again_message
     puts "Let's play again!"
     puts
