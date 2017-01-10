@@ -195,7 +195,7 @@ class TTTGame
       loop do
         current_player_moves
         break if board.someone_won? || board.full?
-        display_board if human_turn
+        clear_screen_and_display_board if human_turn
       end
       display_result
       update_score
@@ -228,8 +228,8 @@ class TTTGame
 
   def get_names_and_markers
     human.get_name
-    computer.get_name
     human.get_marker
+    computer.get_name
     computer.get_marker
   end
 
@@ -272,7 +272,7 @@ class TTTGame
   end
 
   def display_board
-    puts "#{human.name.capitalize} is #{human.marker}. #{computer.name.capitalize} is #{computer.marker}."
+    puts "#{human.name} is #{human.marker}. #{computer.name} is #{computer.marker}."
     puts
     board.draw
     puts
