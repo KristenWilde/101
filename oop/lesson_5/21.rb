@@ -1,5 +1,3 @@
-require 'pry'
-
 class Participant
   attr_accessor :cards
   attr_reader :total
@@ -9,7 +7,12 @@ class Participant
     @total = 0
   end
 
-  def show_cards
+  def show_hand
+    print_cards
+    puts "Total: #{total} #{busted_msg}"
+  end
+
+  def print_cards
     cards_lines = []
     cards[0].card_lines.length.times do |line_idx|
       single_line = []
@@ -35,8 +38,8 @@ class Participant
   end
 
   def total
-    points = 0
     values = cards.map(&:value)
+    points = 0
     values.each do |value|
       if value == 'A ' then points += 11
       elsif value.to_i.zero? then points += 10
@@ -107,7 +110,7 @@ class Game21
   end
 
   def start
-    # show_instructions
+    welcome
     loop do
       deal_cards
       display_game
@@ -118,6 +121,20 @@ class Game21
       reset
     end
     puts "Thank you for playing 21!"
+  end
+
+  def welcome
+    clear_screen
+    puts "Let's play Twenty One!"
+    puts "\nYour goal is to get as close to #{GOAL} as possible, without going"
+    puts "over, by choosing to 'hit' (take another card) or 'stay'."
+    puts "\nNumbers are worth their value. Jack, queen, and king are 10 points."
+    puts "Ace is 11, unless your total cards are over #{GOAL} - then it's 1."
+    puts "\nAfter you stay or bust (go over #{GOAL}), my turn. I'll also try"
+    puts " to get as close as possible to #{GOAL}. If neither of us busts, the"
+    puts "higher total wins."
+    puts "\nPress enter to start!"
+    gets
   end
 
   def deal_cards
@@ -134,67 +151,71 @@ class Game21
 
   def display_game
     clear_screen
-    puts "----------------------------------------------------"
-    puts "Dealer has:"
-    dealer.show_cards
-    puts "Dealer total: #{dealer.total} #{dealer.busted_msg}"
-    puts "----------------------------------------------------"
-    puts "Player has:"
-    player.show_cards
-    puts "Player total: #{player.total} #{player.busted_msg}"
+    puts "----------------------------------------------------\nDealer has:"
+    dealer.show_hand
+    puts "----------------------------------------------------\nPlayer has:"
+    player.show_hand
     puts "----------------------------------------------------\n"
   end
 
   def player_turn
     loop do
-      puts "Player, would you like to (h)it or (s)tay?"
-      answer = nil
-      loop do
-        answer = gets.chomp.downcase
-        break if answer == 'h' || answer == 's'
-        puts "Please enter 'h' or 's'."
-      end
-      break if answer == 's' # otherwise answer was 'h' so continue.
+      break unless hit?
       player.cards << deck.cards.pop
       display_game
-      puts "Player chose to hit.\n"
+      puts "Player chose to hit\n"
       break if player.busted?
     end
+  end
+
+  def hit?
+    puts "Player, would you like to (h)it or (s)tay?"
+    answer = nil
+    loop do
+      answer = gets.chomp.downcase
+      break if answer == 'h' || answer == 's'
+      puts "Please enter 'h' or 's'."
+    end
+    answer == 'h' # returns true or false.
   end
 
   def dealer_turn
     dealer.cards[1].hidden = false
     display_game
-    puts "Press enter for dealer's turn."
+    puts "Dealer's turn. Please press enter."
     gets
     unless player.busted?
-      loop do
-        if dealer.total < DEALER_STAY_VAL # dealer hits
-          dealer.cards << deck.cards.pop
-          display_game
-          puts "Dealer chose to hit. Please press enter."
-          gets
-        elsif !dealer.busted?
-          puts "Dealer stays. Please press enter."
-          gets
-          break
-        else break
-        end
+      dealer_play_loop
+    end
+  end
+
+  def dealer_play_loop
+    loop do
+      if dealer.total < DEALER_STAY_VAL # dealer hits
+        dealer.cards << deck.cards.pop
+        display_game
+        puts "Dealer chose to hit. Please press enter."
+        gets
+      else break
       end
     end
   end
 
-  def show_result
+  def result
     if player.busted?
-      puts "Player busted! Dealer wins!"
+      "Player busted! Dealer wins!"
     elsif dealer.busted?
-      puts "Dealer busted! Player wins!"
+      "Dealer busted! Player wins!"
     elsif dealer.total > player.total
-      puts "Dealer wins!"
+      "Dealer wins!"
     elsif player.total > dealer.total
-      puts "Player wins!"
-    else puts "It's a tie!"
+      "Dealer chose to stay. Player wins!"
+    else "It's a tie!"
     end
+  end
+
+  def show_result
+    puts result
   end
 
   def play_again?
