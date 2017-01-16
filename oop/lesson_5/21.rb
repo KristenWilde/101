@@ -1,6 +1,5 @@
 class Participant
   attr_accessor :cards
-  attr_reader :total
 
   def initialize
     @cards = []
@@ -25,26 +24,25 @@ class Participant
   end
 
   def busted?
-    if total == '?' then false
-    elsif total <= 21 then false
-    else true
-    end
+    return false if total == '?' || total <= 21
+    true
   end
 
   def busted_msg
-    if busted? then "BUSTED"
-    else ""
-    end
+    busted? ? "BUSTED" : ""
   end
 
   def total
     values = cards.map(&:value)
     points = 0
     values.each do |value|
-      if value == 'A ' then points += 11
-      elsif value.to_i.zero? then points += 10
-      else points += value.to_i
-      end
+      points += if value == 'A '
+                  11
+                elsif value.to_i.zero?
+                  10
+                else
+                  value.to_i
+                end
     end
     values.select { |value| value == 'A ' }.count.times do
       points -= 10 if points >= Game21::GOAL
@@ -62,7 +60,7 @@ class Deck
 
   def initialize
     shuffled_data = SUITS.product(VALUES).shuffle
-    @cards = shuffled_data.map do |(suit, value)|
+    @cards = shuffled_data.map do |suit, value|
       Card.new(suit, value)
     end
   end
@@ -184,20 +182,16 @@ class Game21
     display_game
     puts "Dealer's turn. Please press enter."
     gets
-    unless player.busted?
-      dealer_play_loop
-    end
+    dealer_play_loop unless player.busted?
   end
 
   def dealer_play_loop
     loop do
-      if dealer.total < DEALER_STAY_VAL # dealer hits
-        dealer.cards << deck.cards.pop
-        display_game
-        puts "Dealer chose to hit. Please press enter."
-        gets
-      else break
-      end
+      break unless dealer.total < DEALER_STAY_VAL
+      dealer.cards << deck.cards.pop
+      display_game
+      puts "Dealer chose to hit. Please press enter."
+      gets
     end
   end
 
@@ -210,7 +204,8 @@ class Game21
       "Dealer wins!"
     elsif player.total > dealer.total
       "Dealer chose to stay. Player wins!"
-    else "It's a tie!"
+    else
+      "It's a tie!"
     end
   end
 
@@ -223,7 +218,7 @@ class Game21
     answer = nil
     loop do
       answer = gets.chomp.downcase
-      break if %w(y n).include?answer
+      break if %w(y n).include?(answer)
       puts "Please enter y or n."
     end
     answer == 'y'
