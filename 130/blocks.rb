@@ -60,4 +60,17 @@ array = [1, 2, 3, 4, 5]
 
 p reduce(array) { |acc, num| acc + num }                    # => 15
 p reduce(array, 10) { |acc, num| acc + num }                # => 25
-p reduce(array) { |acc, num| acc + num if num.odd? } 
+# p reduce(array) { |acc, num| acc + num if num.odd? } 
+
+# Working with Proc object
+
+def call_me(some_code)
+  some_code.call
+end
+
+name = "Robert"
+chunk_of_code = Proc.new { puts "hi #{name}" }
+name = "Griffin III"
+
+
+p call_me(chunk_of_code)
