@@ -72,5 +72,7 @@ name = "Robert"
 chunk_of_code = Proc.new { puts "hi #{name}" }
 name = "Griffin III"
 
-
 p call_me(chunk_of_code)
+# => hi Griffin III
+# I was surprised tat this works. The proc has a 'binding' -- associations to its
+# surrounding code.

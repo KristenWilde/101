@@ -164,6 +164,3 @@ todo1.done!
 
 puts list
 
-list.mark_done("Go to gym")
-
-puts list
