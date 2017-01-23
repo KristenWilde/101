@@ -1,3 +1,5 @@
+# Expectation syntax - more like RSpec.
+
 require 'minitest/autorun'
 require 'minitest/reporters'
 Minitest::Reporters.use!
