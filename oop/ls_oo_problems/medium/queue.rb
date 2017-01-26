@@ -1,6 +1,4 @@
 class CircularQueue
-  attr_reader :queue
-  
   def initialize(size)
     @queue = Array.new
     @size = size
@@ -11,7 +9,7 @@ class CircularQueue
   end
   
   def enqueue(obj)
-    @queue.shift until @queue.size < @size
+    dequeue until @queue.size < @size
     @queue.push(obj)
   end
   

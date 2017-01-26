@@ -10,7 +10,6 @@ class Guesser
     guesses_remaining = @number_of_guesses
 
     until guesses_remaining == 0
-      puts ""
       start_round(guesses_remaining)
       guess = gets.to_i
 
@@ -23,15 +22,13 @@ class Guesser
       
       guesses_remaining -= 1
     end
-    
     puts "You are out of guesses. You lose."
   end
   
   def start_round(guesses_remaining)
-    if guesses_remaining == 1 
-      puts "You have 1 guess remaining."
-    else
-      puts "You have #{guesses_remaining} guesses remaining."
+    puts ""
+    if guesses_remaining == 1  then puts "You have 1 guess remaining."
+    else puts "You have #{guesses_remaining} guesses remaining."
     end
     print "Enter a number between #{@low} and #{@high}: "
   end

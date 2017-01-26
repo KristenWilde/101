@@ -4,10 +4,6 @@ class FixedArray
     @array = Array.new(@size)
   end
   
-  def to_s
-    @array.to_s
-  end
-  
   def []=(index, obj)
     raise IndexError unless ((-@size - 1)..@size).include?(index)
     @array[index] = obj
@@ -20,6 +16,10 @@ class FixedArray
   
   def to_a
     @array.clone
+  end
+  
+  def to_s
+    @array.to_s
   end
 end
 
