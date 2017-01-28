@@ -26,3 +26,9 @@ end
 # assert_raises(ErrorName) {code}
 # assert_instance_of(ClassName, obj)
 # assert_includes(array, obj)
+# assert_empty(array)
+# assert_kind_of(ClassName, obj) - uses Object#kind_of to check whether the
+#     object is an instance of the named class or one of its superclasses.
+
+# All of the assertions have a correstponding refute method!
+# refute_includes(array, obj) will pass only if the array does not include the obj.
