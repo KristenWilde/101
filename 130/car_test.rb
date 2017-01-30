@@ -6,7 +6,7 @@ Minitest::Reporters.use!
 
 require_relative 'car' # name of file to test, in the same folder.
 
-class CarTest < MiniTest::Test  # inherits other methods needed to run tests.
+class CarTest < Minitest::Test  # inherits other methods needed to run tests.
   def test_wheels       # all tests are instance methods beginning with 'test_'
     car = Car.new              # instantiating an object for comparison
     assert_equal(4, car.wheels) # first param is the expected value (4), second is the actual, ie test value. 
@@ -29,6 +29,7 @@ end
 # assert_empty(array)
 # assert_kind_of(ClassName, obj) - uses Object#kind_of to check whether the
 #     object is an instance of the named class or one of its superclasses.
+# assert_output("output string ending with \n") { code } - uses stdout 
 
 # All of the assertions have a correstponding refute method!
 # refute_includes(array, obj) will pass only if the array does not include the obj.

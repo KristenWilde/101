@@ -47,7 +47,6 @@ class Deck
 end
 
 class PokerHand
-  attr_reader :hand
   
   def initialize(deck)
     @hand = Array.new(5) { deck.draw}
@@ -71,8 +70,9 @@ class PokerHand
     end
   end
 
-  # private
-
+  private
+  attr_reader :hand
+  
   def royal_flush?
     hand.map(&:value).inject(:+) == 60 && flush?
   end
