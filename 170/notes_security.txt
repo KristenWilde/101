@@ -1,0 +1,34 @@
+ The same attributes that make HTTP so difficult to control also make it 
+ so difficult to secure. 
+
+Session hijacking: With HTTP, a hacker could potentially intercept a session id and "log in" as a 
+user, without needing a username and password. 
+
+3 countermeasures:
+
+- HTTPS addresses that problem by using encryption if used accross the entire app. 
+TLS (and earlier, SSL), is a cryptographic protocol.
+
+- Resetting sessions: logging in again when entering a potentially sensitive area
+of a site (such as changing credit card info).
+
+- Expiration time on sessions
+
+Same-origin policy: scripts can only manipulate documents coming from the same
+origin (hostname and port number). 
+
+Cross-origin resource sharing (CORS): allows resources from one domain to be
+requested from another domain (bypassing the same-origin policy). Works
+by adding new http headers.
+
+Cross-Site Scripting (XSS): When a user inputs malicious text into a comment area that
+includes html and javascript. Will be executed on other users' browsers, and 
+could steal session id's.
+
+2 solutions:
+
+- sanitize user input. Eliminate <script> tags or disallow any html/javascript.
+Markdown is safe.
+
+- escape all user input data when displaying it, so that the browser doesn't 
+interpret it as code.

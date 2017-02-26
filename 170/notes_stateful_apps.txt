@@ -1,0 +1,22 @@
+The HTTP protocol is stateless; the server does not hang on to information 
+between each request/response cycle. Different requests are not aware of 
+each other.
+
+How to make an app seem stateful:
+
+1. Sessions
+
+A session identifier is a token that the server provides, and the client appends
+it to each request. Valid for a certain amount of time.
+
+2. Cookies
+
+Small files stored in the browser containing the session information.
+Find them in DevTools > Application > Cookies. Session id is one of 
+them.
+
+3. AJAX (Asynchronous JavaScript (Calls || and XML))
+
+allows browsers to issue requests and process responses without a full page
+refresh.
+
