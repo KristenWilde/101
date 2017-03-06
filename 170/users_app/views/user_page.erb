@@ -1,0 +1,18 @@
+
+  <h1><%= @user %></h1>
+  
+  <p><%= @users[@user.to_sym][:email] %></p>
+  <p>Interests: <%= @users[@user.to_sym][:interests].join(", ")%></p>
+
+
+  <div style="position: absolute; bottom: 200px">
+    <h3>Other users:</h3>
+    <ul>
+      <% other_users = @users.keys - [@user.to_sym] %>
+      <% other_users.each do |user| %>
+       <li>
+        <a href="/user/<%= user %>"><%= user %></a>
+       </li>
+      <% end %>
+    </ul>
+  </div>
