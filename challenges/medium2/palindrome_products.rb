@@ -1,90 +1,73 @@
 require 'pry'
 
-class PalindromesTest 
-  attr_accessor :max_factor, :min_factor
+class Palindromes
+  attr_reader :largest, :smallest
 
   def initialize(params)
     @max_factor = params[:max_factor]
     @min_factor = params[:min_factor] || 1
   end
 
-  def generate_all
-    @palindromes = {}
-    all_numbers = min_factor.step(to: max_factor).to_a
+  def generate
+    all_numbers = (@min_factor..@max_factor).to_a
     all_combinations = all_numbers.combination(2).to_a
+    all_numbers.each {|num| all_combinations << [num, num]}
     all_combinations.each do |pair|
       product = pair[0] * pair[1]
-      if is_palindrome(product)
-        if @palindromes[product]
-          then @palindromes[product] << pair 
-          else @palindromes[product] = [pair]
-          end
-      end
-    end
-    @palindromes
-  end
-
-  def generate
-    i = 1
-    @smallest = nil
-    until @smallest do
-      find_palindromes_and_factors(@min_factor, @min_factor+i)
-      i += 1
-    end
-
-    @largest = nil
-    i = 1
-    until @largest do
-      find_palindromes_and_factors(@max_factor-i, @max_factor)
-      i += 1
-    end
-  end
-
-  def find_palindromes_and_factors(min, max)
-    number_set = (min..max).to_a
-    combinations = number_set.combination(2).to_a
-    number_set.each {|num| combinations << [num, num]} # putting doubles in the array
-    results = {}
-    combinations.each do |pair|
-      product = pair[0] * pair[1]
       next unless is_palindrome(product)
-      case (results[value] <=> product)
-      when 1 # stored value is greater
-        next
-      when 0 # they're equal
-        results[factors] << pair
-      when -1 # product is greater
-        results[factors] = [pair]
-        results[value] = product
-      end
+      save_smallest(product, pair)
+      save_largest(product, pair)
     end
-    results
   end
 
+  private
 
-  def largest
-    @largest
-  end
+  def save_smallest(product, factors)
+    if @smallest == nil
+      @smallest = Palindrome.new(product, factors)
+    elsif @smallest.value < product
+      return
+    elsif @smallest.value == product
+      @smallest << factors
+    else
+      @smallest = Palindrome.new(product, factors)
+    end
+  end  
 
-  def smallest
-    @smallest
-  end
-
-  def value
-
-  end
-
-  def factors
-
-  end
+  def save_largest(product, factors)
+    if @largest == nil
+      @largest = Palindrome.new(product, factors)
+    elsif @largest.value > product
+      return
+    elsif @largest.value == product
+      @largest << factors
+    else
+      @largest = Palindrome.new(product, factors)
+    end
+  end  
 
   def is_palindrome(num)
-    return_val = (num.to_s.reverse == num.to_s)
-    p return_val
-    return_val
+    num.to_s.reverse == num.to_s
+  end
+
+  def message
+    puts "There are no palindromes in that range of numbers."
   end
 end
 
-my_test = PalindromesTest.new(max_factor: 9)
-my_test.generate
-p my_test.smallest
+class Palindrome
+  attr_reader :value, :factors
+
+  def initialize(value, factor_pair)
+    @value = value
+    @factors = [factor_pair]
+  end
+
+  def <<(factor_pair)
+    @factors << factor_pair
+  end
+end
+
+# palindromes = Palindromes.new(max_factor: 99, min_factor: 10)
+# palindromes.generate
+# p palindromes.largest.value
