@@ -14,7 +14,7 @@ class Clock
   end
 
   def to_s
-    "#{format('%#02i', @hours)}:#{format('%#02i', @mins)}"
+    format('%02i:%02i', @hours, @mins)
   end
 
   def +(minutes)
@@ -41,11 +41,10 @@ class Clock
   end
 
   def ==(other_clock)
-    self.mins == other_clock.mins && self.hours == other_clock.hours
+    self.to_s == other_clock.to_s
   end
 
-  protected
-  attr_reader :hours, :mins
+  private
 
   def initialize(hours, mins)
     @hours = hours
