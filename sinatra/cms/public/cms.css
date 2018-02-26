@@ -1,0 +1,19 @@
+body {
+	padding: 20px;
+	font-family: sans-serif;
+}
+
+.message {
+	padding: 10px;
+  	background: #FFFF99;
+}
+
+.inline {
+	display: inline;
+}
+
+.status {
+	font-style: italic;
+	font-size: 0.9em;
+}
+
