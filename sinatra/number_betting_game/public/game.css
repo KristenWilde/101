@@ -1,0 +1,36 @@
+body {
+  background-color: lightgray;
+  font-family: helvetica, sans-serif;
+}
+
+main {
+  background-color: white;
+  margin-top: 1em;
+  margin-left: auto;
+  margin-right: auto;
+  width: 30em;
+  padding: 1.5em;
+  border-radius: 3%;
+  border: 1px solid gray;
+}
+
+.message {
+  background-color: #4BFFA5;
+  padding: 1em;
+}
+
+button {
+  background-color: #FF5F4B;
+  font-size: 1rem;
+  color: white;
+  padding: 1em;
+  width: 7em;
+  border-radius: 5%;
+}
+
+.reset {
+  background-color: #11B262;
+}
+
+
+

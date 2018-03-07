@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Number Betting</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/game.css">
+  </head>
+  <body>
+    <main>
+      
+      <%= yield %>
+
+      <form method="post" action="/reset">
+        <button class="reset" name="reset" value="true">Reset</button>
+      </form>
+
+    </main>
+  </body>
+</html>
