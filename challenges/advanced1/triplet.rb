@@ -3,8 +3,8 @@
 #For example, 3**2 + 4**2 = 9 + 16 = 25 = 5**2.
 
 class Triplet
-  def initialize(a,b,c)
-    @triplet = [a, b, c].sort
+  def initialize(*arguments)
+    @triplet = arguments.flatten.sort
   end
 
   def sum
@@ -16,11 +16,19 @@ class Triplet
   end
 
   def pythagorean?
-# input: have triplet
-# output: boolean
-# tests: (3,4,5) true 3**2 + 4**2 == 5**2
-# (5,6,7) false
     @triplet[0]**2 + @triplet[1]**2 == @triplet[2]**2
   end
 
+  def self.where(inputs)
+    max_factor = inputs[:max_factor]
+    min_factor = inputs[:min_factor] || 1
+    sum = inputs[:sum]
+
+    all_triplets = (min_factor..max_factor).to_a.combination(3).to_a
+    all_triplets.map! { |triplet| Triplet.new(triplet) }
+    if sum 
+      all_triplets.select! { |triplet| triplet.sum == sum } 
+    end
+    all_triplets.select { |triplet| triplet.pythagorean? }
+  end
 end
